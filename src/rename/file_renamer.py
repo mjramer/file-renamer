@@ -99,7 +99,7 @@ def rename_s3_file(old_key, new_key):
 
     # Delete the old object
     # s3_client.delete_object(Bucket=S3_BUCKET_NAME, Key=old_key)
-    print("Renamed from " + old_key + " to " + new_key)
+    logging.info("Renamed from " + old_key + " to " + new_key)
 
 # def extract_date(input_string):
 #     start_index = None
@@ -151,7 +151,6 @@ def process_file(document_name):
             if item["BlockType"] == "LINE":
                 curr_line = item["Text"]
                 # print(curr_line)
-                # file_text_dict.append(curr_line)
                 if found_site_id == True:
                     site_id = "Site " + curr_line
                     if "SNL" in site_id:
