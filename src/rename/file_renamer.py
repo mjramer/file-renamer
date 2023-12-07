@@ -130,11 +130,11 @@ def extract_date(input_string):
 
     return None
 
-# def process_file(document_name, pbar):
-def process_file(document_name):
+# def rename_file(file, pbar):
+def rename_file(file):
     # logging.info("tasks assigned!")
-    job_id = start_job(document_name)
-    # logging.info("Started job for pdf: {}".format(document_name))
+    job_id = start_job(file)
+    # logging.info("Started job for pdf: {}".format(file))
     if is_job_complete(job_id):
         response = get_job_results(job_id)
 
@@ -187,7 +187,7 @@ def process_file(document_name):
                 if "Signature:" in curr_line:
                     found_signature = True
     new_file_name += ".pdf"
-    rename_s3_file(document_name, new_file_name)
+    rename_s3_file(file, new_file_name)
     # print(new_file_name)
     # pbar.update()
 
@@ -204,16 +204,16 @@ if __name__ == "__main__":
     # pbar = SafeProgressBar(total_tasks)
 
     with Pool(20) as pool:
-        result = pool.map_async(process_file, single_pdfs)
+        result = pool.map_async(rename_file, single_pdfs)
         for result in result.get():
             pass
             # print(f'Got result: {result}', flush=True)
-        # async_result = [pool.apply_async(process_file, args=(pdf, pbar)) for pdf in single_pdfs]
-        # pool.map(process_file, single_pdfs, pbar)
+        # async_result = [pool.apply_async(rename_file, args=(pdf, pbar)) for pdf in single_pdfs]
+        # pool.map(rename_file, single_pdfs, pbar)
 
     # for pdf in single_pdfs:
     #     if (len(threads) < 10):
-    #         thread = threading.Thread(target=process_file, args=(pdf,pbar))
+    #         thread = threading.Thread(target=rename_file, args=(pdf,pbar))
     #         threads.append(thread)
     #         thread.start()
     #     else:
