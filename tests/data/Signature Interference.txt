@@ -1,0 +1,51 @@
+Bill of Lading : Teen Program
+LIC
+COM
+d/b/a
+Rommissary
+Driver:
+Mame N.
+Route:
+2
+Stop:
+11
+Open at:
+Deliver To:
+Site ID:
+143
+Program Name:
+Research Foundation of CUNY - Tilden
+Address:
+630 Mother Gaston Blvd. Brooklyn, NY 11212
+Contact 1:
+347-240-8089 Joanette Kingwood
+Contact 2:
+347-240-8089 Sean Payor
+Notes:
+Quantity:
+Description
+Serving Size
+Quantity
+Number of
+Temperature
+Totes
+Beef Bolognese w/ Whole
+1 Each
+10
+Wheat Pasta and Peas
+38 °F
+1 % Milk
+1 Each
+10
+39
+°F
+1 Each
+1 Each
+Received By:
+Name:
+Joanette Kingwood
+Signature:
+Date:
+11/28/23
+Refrigerated
+Placed on Counter

@@ -1,0 +1,51 @@
+Bill of Lading :SNL
+LIC
+COM
+d/b/a
+Driver:
+Kantrell
+Rommissary
+Route:
+6
+Stop:
+6
+Open at:
+Deliver To:
+Site ID:
+SNL
+Program Name:
+YMCA of Greater New York/Corporate - I.S. 347 School of Humanities
+Address:
+35 Starr Street Brooklyn, NY
+Contact 1:
+Henry Garcia
+Contact 2:
+347-351-9214
+Notes:
+Quantity:
+Description
+Serving Size
+Quantity
+Number of
+Temperature
+Totes
+Turkey and Cheese
+1 Each
+20
+1
+Sandwich on a Whole Wheat
+38 °F
+Bun with Coleslaw
+Bottle Water
+1 Each
+20
+39 °F
+Received By:
+Name:
+Taishan Cruz
+Signature:
+Jersln Cruz
+Date:
+12/02/23
+Refrigerated
+Placed on Counter

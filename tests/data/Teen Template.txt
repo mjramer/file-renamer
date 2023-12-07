@@ -1,0 +1,49 @@
+Bill of Lading : Teen Program
+LIC
+COM
+d/b/a
+Rommissary
+Driver:
+Donnie
+Route:
+6
+Stop:
+3
+Open at:
+Deliver To:
+Site ID:
+41
+Program Name:
+Grand Street Settlement, Inc. - Baruch
+Address:
+605 FDR Drive Manhattan, NY 10002
+Contact 1:
+646-617-0122 Erika Torres
+Contact 2:
+2124772541 Amaila Salinas
+Notes:
+Quantity:
+Description
+Serving Size
+Quantity
+Number of
+Temperature
+Totes
+Chicken Nuggets & Mash
+1 Each
+10
+Potatoes and Peas
+39 °F
+1 % Milk
+1 Each
+10
+39 °F
+Received By:
+Name:
+Erika Torres
+Signature:
+Samantha Muning
+Date:
+11/16/23
+Refrigerated
+Placed on Counter

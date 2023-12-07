@@ -1,0 +1,57 @@
+Bill of Lading - Copy For Site
+LIC
+COM
+d/b/a
+Rommissary
+Driver:
+Aper
+Route:
+2
+Stop:
+11
+Open at:
+Deliver To:
+Site ID:
+13
+SNL
+Program Name:
+Neighborhood Initiatives Development Corporation - Eastchester Gardens
+Address:
+3016 Yates Ave Bronx, NY 10469
+Contact 1:
+Jasmine Burton 917-624-4272
+Contact 2:
+Notes:
+Quantity:
+Description
+Serving Size
+Quantity
+Number of
+Temperature
+Totes
+Turkey Cheese Sandwich w/
+1 Each
+35
+1
+CArrots and cucumber
+37 °F
+Bottle Water
+1 Each
+35
+37 °F
+1 Each
+35
+°F
+1
+1 Each
+35
+°F
+Received By:
+Name:
+Jasmine Burton
+Signature:
+Srf
+Date:
+9/29/23
+Refrigerated
+Placed on Counter

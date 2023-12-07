@@ -1,0 +1,60 @@
+Bill of Lading
+LIC
+COM
+d/b/a
+Rommissary
+Driver:
+Peter
+Route:
+4
+Stop:
+10
+Open at:
+Deliver To:
+Site ID:
+212
+Program Name:
+Grahamael Windham Services To Families & Children - Lafayette
+Address:
+442 Dekalb Avenue Brooklyn, NY 11205
+Contact 1:
+347-697-9919 DeAndra Rivers
+Contact 2:
+3473848880 LaToya Alexander
+Notes:
+Quantity:
+Description
+Serving Size
+Quantity
+Number of
+Temperature
+Totes
+Mac & Cheese w/ Great
+1 Each
+25
+1
+Northern bean and Broccoli
+38 °F
+1% Milk
+1 Each
+25
+39 °F
+Orange and Apple
+1 Each
+25
+°F
+1
+Whole Grain Cracker &
+25
+°F)
+1 Each
+Graham Cracker
+Received By:
+Name:
+DeAndra Rivers
+Signature:
+DRUS
+Date:
+11/27/23
+Refrigerated
+Placed on Counter
