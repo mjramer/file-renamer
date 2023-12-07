@@ -67,9 +67,7 @@ def get_job_results(job_id):
     return pages
 
 def process_file(document_name):
-    # logging.info("tasks assigned!")
     job_id = start_job(document_name)
-    # logging.info("Started job for pdf: {}".format(document_name))
     if is_job_complete(job_id):
         response = get_job_results(job_id)
 
@@ -94,8 +92,6 @@ def upload_file(file_name, bucket, object_name=None):
     if object_name is None:
         object_name = os.path.basename(file_name)
 
-    logging.info("Object name - " + object_name)
-
     # Upload the file
     try:
         response = s3_client.upload_file(file_name, bucket, object_name)
@@ -117,7 +113,6 @@ if __name__ == "__main__":
         upload_file("raw_data/" + raw_pdf, S3_BUCKET_NAME)
         with open("data/" + raw_pdf.replace(".pdf", ".txt"), "w") as data:
             string = process_file(raw_pdf)
-            logging.info(string)
             data.write(string)
         delete_file(raw_pdf, S3_BUCKET_NAME)
         logging.info("Generated txt for " + raw_pdf)
