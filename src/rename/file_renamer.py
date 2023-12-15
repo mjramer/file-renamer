@@ -1,16 +1,14 @@
+import os
 import sys
 import logging
 from multiprocessing import Pool
 import re
-from aws import s3_utils
+from src.aws import aws_conn
 
 
 S3 = "s3"
 S3_BUCKET_NAME = "feefs-pdfs"
 REGION = "us-east-1"
-
-INPUT_PDFS_DIR = "input-single-pdfs/"
-OUTPUT_PDFS_DIR = "renamed-single-pdfs/"
 
 DATE_REGEX_MD = "\d{1}/\d{1}/\d{2}"
 DATE_REGEX_MDD = "\d{1}/\d{2}/\d{2}"
@@ -19,7 +17,7 @@ DATE_REGEX_MMDD = "\d{2}/\d{2}/\d{2}"
 
 new_files_names_dict = {}
 
-textract_client = s3_utils.AWSClientTextractConn(region=REGION, bucket=S3_BUCKET_NAME)
+textract_client = aws_conn.AWSClientTextractConn(region=REGION, bucket=S3_BUCKET_NAME)
 
 root = logging.getLogger()
 root.setLevel(logging.INFO)
@@ -58,7 +56,7 @@ def extract_date_double_dig_month(input_string):
     return None
 
 def generate_file_name(text):
-    new_file_name = OUTPUT_PDFS_DIR
+    new_file_name = ""
     found_site_id = False
     found_date = False
     found_teen = False
@@ -94,7 +92,7 @@ def generate_file_name(text):
         if "Teen" in curr_line:
             found_teen = True
     if (found_date == False):
-        new_file_name = OUTPUT_PDFS_DIR + "no-date-found"
+        new_file_name = "no-date-found"
         logging.warning("No date found! Is the file missing a date?")
 
     new_file_name += ".pdf"
@@ -104,9 +102,7 @@ def rename_file(file_name):
     text = textract_client.extract_text(file_name)
     return {file_name : generate_file_name(text)}
 
-def begin(s3_client, s3_input_dir):
-    logging.info("Starting...")
-
+def begin(s3_client, s3_input_dir, s3_output_dir):
     single_pdfs = s3_client.get_files_from_dir(s3_input_dir)
 
     renamed_files_hash_table = {}
@@ -121,7 +117,22 @@ def begin(s3_client, s3_input_dir):
                 collisions = renamed_files_hash_table[new_file_name]
                 collisions.append(old_file_name)
                 renamed_files_hash_table[new_file_name] = collisions
-    logging.info(renamed_files_hash_table)
-
-# if __name__ == "__main__":
-#     # begin(S3_BUCKET_NAME, INPUT_PDFS_DIR)
+    # logging.info(renamed_files_hash_table)
+    for k, v in renamed_files_hash_table.items():
+        if len(v) > 1:
+            i = 1
+            for old_name in v:
+                new_name = k
+                parts = new_name.split(".pdf")
+                output_parts = [part + " Duplicate " + str(i) for part in parts[:-1]] + ".pdf"
+                new_name_dup = ''.join(output_parts)
+                s3_output_full_path = os.path.join(s3_output_dir, new_name_dup)
+                # logging.info("Old File: " + old_name + " | New File: " + s3_output_full_path)
+                s3_client.rename_s3_file(old_name, s3_output_full_path, False)
+                i += 1
+        elif len(v) == 1:
+            s3_output_full_path = os.path.join(s3_output_dir, k)
+            # logging.info("Old File: " + v[0] + " | New File: " + s3_output_full_path)
+            s3_client.rename_s3_file(v[0], s3_output_full_path, False)
+        else:
+            logging.error("Invalid hashmap entry!")
