@@ -170,6 +170,7 @@
                 if (response.ok) {
                     console.log('Upload success');
                     alert('Files uploaded successfully.');
+                    executePythonScript(); // Call the Python script after successful upload
                 } else {
                     console.error('Upload error:', response.statusText);
                     alert('Error uploading files.');
@@ -178,6 +179,26 @@
             .catch(error => {
                 console.error('Fetch error:', error);
                 alert('Error uploading files.');
+            });
+        }
+
+        function executePythonScript() {
+            // Make a request to your server to execute the Python script
+            fetch('http://localhost:3000/execute-python-script', {
+                method: 'POST',
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Python script execution success');
+                    alert('Python script executed successfully.');
+                } else {
+                    console.error('Python script execution error:', response.statusText);
+                    alert('Error executing Python script.');
+                }
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+                alert('Error executing Python script.');
             });
         }
     </script>

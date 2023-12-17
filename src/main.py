@@ -10,7 +10,7 @@ if __name__ == "__main__":
     s3_client = aws_conn.AWSClientS3Conn(bucket=S3_BUCKET_NAME)
 
     print("Splitting pdfs...")
-    pdf_splitter.split_pdfs_in_dir("/Users/maxramer/Desktop/file-renamer/input_all", "/Users/maxramer/Desktop/file-renamer/output_all")
+    pdf_splitter.split_pdfs_in_dir(s3_client, "/Users/maxramer/Desktop/file-renamer", "/Users/maxramer/Desktop/file-renamer/output_all")
     
     print("Uploading pdfs to S3...")
     s3_client.upload_local_files_to_s3("/Users/maxramer/Desktop/file-renamer/output_all", S3_INPUT_DIR)
