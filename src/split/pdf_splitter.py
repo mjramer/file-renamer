@@ -23,7 +23,8 @@ def split_pdf(input_pdf_path, output_folder):
 
     pdf_document.close()
 
-def split_pdfs_in_dir(input_dir, output_dir):
+def split_pdfs_in_dir(s3_client, input_dir, output_dir):
+    s3_client.download_all_files_from_s3_dir(input_dir, "multi-pdfs")
     for filename in os.listdir(input_dir):
         f = os.path.join(input_dir, filename)
         if os.path.isfile(f) and ".pdf" in f:

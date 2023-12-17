@@ -39,7 +39,13 @@ class AWSClientS3Conn:
                     self.client.upload_file(full_local_path, self.bucket, full_s3_path)
                 except FileNotFoundError:
                     print("The file was not found")
-
+    
+    def download_all_files_from_s3_dir(self, local_dir, s3_dir):
+        files = self.get_files_from_dir(s3_dir)
+        for file in files:
+            full_path_file = os.path.join(local_dir, file)
+            with open(full_path_file, 'wb') as f:
+                self.client.download_fileobj(self.bucket, os.path.join(file), f)
 
 class AWSClientTextractConn:
     def __init__(self, region, bucket):
