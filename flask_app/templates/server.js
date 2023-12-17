@@ -52,16 +52,6 @@ app.post('/upload', upload.array('files'), (req, res) => {
             }
         });
     });
-
-    // Promise.all(promises)
-    //     .then(data => {
-    //         console.log('Upload success:', data);
-    //         res.status(200).send('Files uploaded successfully.');
-    //     })
-    //     .catch(error => {
-    //         console.error('Upload error:', error);
-    //         res.status(500).send('Internal Server Error');
-    //     });
 });
 
 function executePythonScript() {
