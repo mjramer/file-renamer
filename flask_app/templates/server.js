@@ -4,8 +4,8 @@ const multer = require('multer');
 const AWS = require('aws-sdk');
 const path = require('path'); // Add this line
 const cors = require('cors'); // Add this line
-const accessKey = process.env.API_KEY
-const secretAccessKey = process.env.API_KEY
+const accessKey = process.env.AWS_ACCESS_KEY
+const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY
 const region = process.env.REGION
 
 const app = express();
