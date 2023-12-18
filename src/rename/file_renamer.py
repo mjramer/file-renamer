@@ -123,9 +123,15 @@ def begin(s3_client, s3_input_dir, s3_output_dir):
             i = 1
             for old_name in v:
                 new_name = k
-                parts = new_name.split(".pdf")
-                output_parts = [part + " Duplicate " + str(i) for part in parts[:-1]] + ".pdf"
-                new_name_dup = ''.join(output_parts)
+
+                pdf_index = new_name.find(".pdf")
+                new_name_dup = new_name
+                if pdf_index != -1:
+                    new_name_dup = new_name[:pdf_index] + " Duplicate " + new_name[pdf_index:]
+
+                # parts = new_name.split(".pdf")
+                # output_parts = [part + " Duplicate " + str(i) for part in parts[:-1]] + ".pdf"
+                # new_name_dup = ''.join(output_parts)
                 s3_output_full_path = os.path.join(s3_output_dir, new_name_dup)
                 # logging.info("Old File: " + old_name + " | New File: " + s3_output_full_path)
                 s3_client.rename_s3_file(old_name, s3_output_full_path, False)
