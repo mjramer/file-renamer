@@ -21,14 +21,16 @@ class AWSClientS3Conn:
             self.client.delete_object(Bucket=self.bucket, Key=old_key)
         logging.info("Renamed from " + old_key + " to " + new_key)
 
-    def get_files_from_dir(self, dir):
+    def get_files_from_s3_dir(self, dir):
         my_bucket = self.resource.Bucket(self.bucket)
 
-        single_pdfs = []
+        files = []
         for object_summary in my_bucket.objects.filter(Prefix=dir):
-            if ".pdf" in object_summary.key:
-                single_pdfs.append(object_summary.key)
-        return single_pdfs
+            full_path_file = object_summary.key
+            if ".pdf" in full_path_file:
+                file = os.path.split(full_path_file)[-1]
+                files.append(file)
+        return files
 
     def upload_local_files_to_s3(self, local_dir, s3_dir):
         for single_pdf in os.listdir(local_dir):
@@ -41,11 +43,11 @@ class AWSClientS3Conn:
                     print("The file was not found")
     
     def download_all_files_from_s3_dir(self, local_dir, s3_dir):
-        files = self.get_files_from_dir(s3_dir)
+        files = self.get_files_from_s3_dir(s3_dir)
         for file in files:
             full_path_file = os.path.join(local_dir, file)
             with open(full_path_file, 'wb') as f:
-                self.client.download_fileobj(self.bucket, os.path.join(file), f)
+                self.client.download_fileobj(self.bucket, os.path.join(s3_dir, file), f)
 
 class AWSClientTextractConn:
     def __init__(self, region, bucket):
