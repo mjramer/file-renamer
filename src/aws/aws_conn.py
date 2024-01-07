@@ -11,14 +11,10 @@ class AWSClientS3Conn:
         self.client = boto3.client(S3)
         self.resource = boto3.resource(S3)
     
-    def rename_s3_file(self, old_key, new_key, delete_on):
+    def rename_s3_file(self, old_key, new_key):
         # Copy the object with the new key
         copy_source = {'Bucket': self.bucket, 'Key': old_key}
         self.client.copy_object(CopySource=copy_source, Bucket=self.bucket, Key=new_key)
-
-        # Delete the old object
-        if delete_on:
-            self.client.delete_object(Bucket=self.bucket, Key=old_key)
         logging.info("Renamed from " + old_key + " to " + new_key)
 
     def get_files_from_s3_dir(self, dir):
@@ -48,6 +44,12 @@ class AWSClientS3Conn:
             full_path_file = os.path.join(local_dir, file)
             with open(full_path_file, 'wb') as f:
                 self.client.download_fileobj(self.bucket, os.path.join(s3_dir, file), f)
+    
+    def delete_all_files_in_s3_dir(self, s3_dir):
+        files = self.get_files_from_s3_dir(s3_dir)
+        for file in files:
+            full_s3_file_path = os.path.join(s3_dir, file)
+            self.client.delete_object(Bucket=self.bucket, Key=full_s3_file_path)
 
 class AWSClientTextractConn:
     def __init__(self, region, bucket):

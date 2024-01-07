@@ -3,12 +3,15 @@ import sys
 import logging
 from multiprocessing import Pool
 import re
+from tqdm import tqdm
 from src.aws import aws_conn
 
 
 S3 = "s3"
 S3_BUCKET_NAME = "feefs-pdfs"
 REGION = "us-east-1"
+
+THREAD_COUNT = 20
 
 DATE_REGEX_MD = "\d{1}/\d{1}/\d{2}"
 DATE_REGEX_MDD = "\d{1}/\d{2}/\d{2}"
@@ -103,20 +106,24 @@ def rename_file(file_name):
     return {file_name : generate_file_name(text)}
 
 def begin(s3_client, s3_input_dir, s3_output_dir):
-    single_pdfs = s3_client.get_files_from_dir(s3_input_dir)
+    single_pdfs = s3_client.get_files_from_s3_dir(s3_input_dir)
+    single_pdfs = [os.path.join(s3_input_dir, file) for file in single_pdfs]
 
     renamed_files_hash_table = {}
-    with Pool(20) as pool:
-        result = pool.map_async(rename_file, single_pdfs)
-        for result in result.get():
-            old_file_name = next(iter(result.keys()))
-            new_file_name = next(iter(result.values()))
-            if renamed_files_hash_table.get(new_file_name) == None:
-                renamed_files_hash_table[new_file_name] = [old_file_name]
-            else:
-                collisions = renamed_files_hash_table[new_file_name]
-                collisions.append(old_file_name)
-                renamed_files_hash_table[new_file_name] = collisions
+    num_files = len(single_pdfs)
+    with tqdm(total=num_files) as pbar:
+        with Pool(THREAD_COUNT) as pool:
+            result = pool.map_async(rename_file, single_pdfs)
+            for result in result.get():
+                old_file_name = next(iter(result.keys()))
+                new_file_name = next(iter(result.values()))
+                if renamed_files_hash_table.get(new_file_name) == None:
+                    renamed_files_hash_table[new_file_name] = [old_file_name]
+                else:
+                    collisions = renamed_files_hash_table[new_file_name]
+                    collisions.append(old_file_name)
+                    renamed_files_hash_table[new_file_name] = collisions
+            pbar.update(THREAD_COUNT)
     # logging.info(renamed_files_hash_table)
     for k, v in renamed_files_hash_table.items():
         if len(v) > 1:
@@ -127,18 +134,18 @@ def begin(s3_client, s3_input_dir, s3_output_dir):
                 pdf_index = new_name.find(".pdf")
                 new_name_dup = new_name
                 if pdf_index != -1:
-                    new_name_dup = new_name[:pdf_index] + " Duplicate " + new_name[pdf_index:]
+                    new_name_dup = new_name[:pdf_index] + " Duplicate " + str(i) + new_name[pdf_index:]
 
                 # parts = new_name.split(".pdf")
                 # output_parts = [part + " Duplicate " + str(i) for part in parts[:-1]] + ".pdf"
                 # new_name_dup = ''.join(output_parts)
                 s3_output_full_path = os.path.join(s3_output_dir, new_name_dup)
                 # logging.info("Old File: " + old_name + " | New File: " + s3_output_full_path)
-                s3_client.rename_s3_file(old_name, s3_output_full_path, False)
+                s3_client.rename_s3_file(old_name, s3_output_full_path)
                 i += 1
         elif len(v) == 1:
             s3_output_full_path = os.path.join(s3_output_dir, k)
             # logging.info("Old File: " + v[0] + " | New File: " + s3_output_full_path)
-            s3_client.rename_s3_file(v[0], s3_output_full_path, False)
+            s3_client.rename_s3_file(v[0], s3_output_full_path)
         else:
             logging.error("Invalid hashmap entry!")
